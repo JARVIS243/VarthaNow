@@ -2,5 +2,5 @@ streamlit
 feedparser
 beautifulsoup4
 pillow
+pytz
 streamlit-autorefresh
-
