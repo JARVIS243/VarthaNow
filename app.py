@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from PIL import Image
 from datetime import datetime
 from pytz import timezone
+import time
 
 # --- Load logo ---
 logo = Image.open("varthanow.png")
@@ -12,6 +13,10 @@ st.set_page_config(page_title="VarthaNow", page_icon=logo, layout="wide")
 # --- CSS Styling ---
 st.markdown("""
     <style>
+    body {
+        background-color: #121212;
+        color: #fff;
+    }
     .headline:hover {
         background-color: #1c1c1c;
         box-shadow: 0 0 15px rgba(255,255,255,0.1);
@@ -38,19 +43,19 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- Header ---
+# --- Header: Logo + Title ---
 col1, col2 = st.columns([1, 10])
 with col1:
     st.image(logo, width=60, use_container_width=True)
 with col2:
     st.markdown("<h2 style='margin-bottom:0;'>🗞 VarthaNow</h2>", unsafe_allow_html=True)
 
-# --- Time Display ---
+# --- Time Display Placeholder ---
+time_placeholder = st.empty()
+
 def get_time():
     india = timezone('Asia/Kolkata')
     return datetime.now(india).strftime("%d %B %Y, %I:%M:%S %p")
-
-time_placeholder = st.empty()
 
 # --- Search + Language Form ---
 with st.form("news_form"):
@@ -90,21 +95,30 @@ def get_news(lang="ml", query=""):
 
     return news_items
 
-# --- Show Time + News ---
-news_data = get_news(lang_code, query)
+# --- Show News and Time ---
+if submitted or query == "":
+    news_data = get_news(lang_code, query)
 
-for i in range(60):  # Refresh clock for up to 60 seconds (limit in Streamlit script)
-    time_placeholder.markdown(f"<div class='time-box'><b>Last Updated:</b> {get_time()}</div>", unsafe_allow_html=True)
-    
-    for item in news_data:
-        st.markdown(f"""
-        <div class="news-block headline">
-            <h5>{item['title']}</h5>
-            <p>{item['summary']}</p>
-            <div class="source">{item['source']} | {item['published']} <a href="{item['link']}" target="_blank" class="read-link float-end">Read</a></div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("<hr>", unsafe_allow_html=True)
-    st.markdown("<div style='text-align:center; color:#666;'>© 2025 | Published by Aju Krishna</div>", unsafe_allow_html=True)
-    break  # We break immediately here because Streamlit re-runs script on every interaction
+    # Live-updating clock (60 seconds)
+    for _ in range(60):
+        time_placeholder.markdown(
+            f"<div class='time-box'><b>Last Updated:</b> {get_time()}</div>",
+            unsafe_allow_html=True
+        )
+
+        for item in news_data:
+            st.markdown(f"""
+            <div class="news-block headline">
+                <h5>{item['title']}</h5>
+                <p>{item['summary']}</p>
+                <div class="source">{item['source']} | {item['published']} 
+                <a href="{item['link']}" target="_blank" class="read-link float-end">Read</a></div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.markdown("<hr>", unsafe_allow_html=True)
+        st.markdown(
+            "<div style='text-align:center; color:#888;'>© 2025 | Published by Aju Krishna</div>",
+            unsafe_allow_html=True
+        )
+        time.sleep(1)
