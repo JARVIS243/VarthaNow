@@ -1,6 +1,6 @@
 # VarthaNow
 VarthaNow is a simple, elegant news app built with Streamlit and Python. It fetches real-time Malayalam and English news from Google News RSS. Features include live clock, keyword search, responsive dark theme, and mobile-friendly layout—perfect for quick daily news updates.
-# 📰 VarthaNow
+# 🗞 VarthaNow
 
 **VarthaNow** is a simple, modern, and responsive real-time news aggregator built using Python and Streamlit. It fetches live news headlines from Google News RSS feeds in Malayalam and English, with a clean UI, dark mode, and support for search.
 
