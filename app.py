@@ -43,7 +43,7 @@ col1, col2 = st.columns([1, 10])
 with col1:
     st.image(logo, width=60, use_container_width=True)
 with col2:
-    st.markdown("<h2 style='margin-bottom:0;'>📰 VarthaNow</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='margin-bottom:0;'>🗞 VarthaNow</h2>", unsafe_allow_html=True)
 
 # --- Time Display ---
 def get_time():
